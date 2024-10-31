@@ -1,0 +1,77 @@
+# Ignore Maven / Gradle directories and files
+target/
+build/
+*.jar
+*.war
+*.ear
+
+# Ignore IDE-specific files
+# IntelliJ
+.idea/
+*.iml
+*.iws
+out/
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+.nb-gradle/
+# VS Code
+.vscode/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+logs/
+
+# Ignore config and secrets
+*.env
+.env.local
+.env.*.local
+application-*.yml
+application-*.yaml
+application-*.properties
+
+# Ignore specific framework folders
+# Spring Boot specific files
+*.h2.db
+*.mv.db
+*.trace.db
+
+# Ignore dependencies
+dependency-reduced-pom.xml
+.mvn/timing.properties
+node_modules/
+
+# Ignore Docker files
+docker-compose.override.yml
+.docker/
+
+# Ignore IntelliJ project-specific files
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Ignore coverage and report files
+coverage/
+jacoco.exec
+jacoco-report/
+
+# Ignore temporary and cache files
+*.tmp
+*.swp
+.cache/
+logs/
+.tmp/
+
+# Ignore build output
+/target/
+/build/
+
+# Ignore compiled class files
+*.class
