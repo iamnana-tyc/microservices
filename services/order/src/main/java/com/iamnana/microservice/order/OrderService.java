@@ -6,6 +6,8 @@ import com.iamnana.microservice.kafka.OrderConfirmation;
 import com.iamnana.microservice.kafka.OrderProducer;
 import com.iamnana.microservice.orderLine.OrderLineRequest;
 import com.iamnana.microservice.orderLine.OrderLineService;
+import com.iamnana.microservice.payment.PaymentClient;
+import com.iamnana.microservice.payment.PaymentRequest;
 import com.iamnana.microservice.product.ProductClient;
 import com.iamnana.microservice.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +26,7 @@ public class OrderService {
     private final ProductClient productClient;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
     public Integer createOrder(OrderRequest request) {
         // we need to check client exist using open feign
@@ -49,6 +52,14 @@ public class OrderService {
         }
 
         // TODO we need to start the payment process
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         // send order confirmation --> notification sms using Kafka
         orderProducer.sendOrderConfirmation(
