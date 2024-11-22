@@ -1,5 +1,7 @@
 package com.iamnana.microservice.order;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.iamnana.microservice.product.PurchaseRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,6 +11,7 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.List;
 
+@JsonInclude(Include.NON_EMPTY)
 public record OrderRequest(
         Integer id,
         String reference,
