@@ -14,7 +14,7 @@ public class PaymentService {
     private final NotificationProducer notificationProducer;
 
     public Integer createPayment(PaymentRequest request) {
-        var payment = repository.save(mapper.toPayment(request));
+        var payment = this.repository.save(this.mapper.toPayment(request));
 
         // send notification
         notificationProducer.sendNotification(
@@ -22,8 +22,8 @@ public class PaymentService {
                         request.orderReference(),
                         request.amount(),
                         request.paymentMethod(),
-                        request.customer().firstName(),
-                        request.customer().lastName(),
+                        request.customer().firstname(),
+                        request.customer().lastname(),
                         request.customer().email()
                 )
         );
