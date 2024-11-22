@@ -13,6 +13,7 @@ import com.iamnana.microservice.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,7 @@ public class OrderService {
     private final OrderProducer orderProducer;
     private final PaymentClient paymentClient;
 
+    @Transactional
     public Integer createOrder(OrderRequest request) {
         // we need to check client exist using open feign
         var customer = this.customerClient.findCustomerById(request.customerId())
@@ -51,7 +53,7 @@ public class OrderService {
             );
         }
 
-        // TODO we need to start the payment process
+        // we need to start the payment process
         var paymentRequest = new PaymentRequest(
                 request.amount(),
                 request.paymentMethod(),
@@ -76,15 +78,15 @@ public class OrderService {
     }
 
     public List<OrderResponse> findAll() {
-        return repository.findAll()
+        return this.repository.findAll()
                 .stream()
-                .map(mapper::fromOrder)
+                .map(this.mapper::fromOrder)
                 .collect(Collectors.toList());
     }
 
     public OrderResponse findById(Integer orderId) {
-        return repository.findById(orderId)
-                .map(mapper::fromOrder)
+        return this.repository.findById(orderId)
+                .map(this.mapper::fromOrder)
                 .orElseThrow(()-> new EntityNotFoundException(String.format("No order found with the provided ID: %d", orderId)));
     }
 }
