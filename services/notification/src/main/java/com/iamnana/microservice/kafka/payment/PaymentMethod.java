@@ -2,8 +2,8 @@ package com.iamnana.microservice.kafka.payment;
 
 public enum PaymentMethod {
     PAYPAL,
-    CREDIT_CARD,
     VISA,
+    CREDIT_CARD,
     MASTER_CARD,
     BITCOIN
 }
