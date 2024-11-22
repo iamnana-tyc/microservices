@@ -4,6 +4,7 @@ import com.iamnana.microservice.exception.ProductPurchaseException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,6 +22,7 @@ public class ProductService {
         return repository.save(product).getId();
     }
 
+    @Transactional(rollbackFor = ProductPurchaseException.class)
     public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> request) {
         // first we need to get all products id
         var productIds = request.stream()
