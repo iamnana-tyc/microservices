@@ -3,10 +3,8 @@ package com.iamnana.microservice.customer;
 
 import com.iamnana.microservice.exception.CustomerNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.http.HttpStatusCode;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,27 +17,27 @@ public class CustomerService {
     private final CustomerMapper mapper;
 
     public String createCustomer(CustomerRequest request) {
-        Customer customer = repository.save(mapper.toCustomer(request));
+        Customer customer = this.repository.save(mapper.toCustomer(request));
         return customer.getId();
     }
 
     public void updateCustomer(CustomerRequest request) {
-        var customer = repository.findById(request.id())
+        var customer = this.repository.findById(request.id())
                 .orElseThrow(()-> new CustomerNotFoundException(
-                        format("Can't update customer:: No customer found with the provided ID:: %s", request.id())
+                        String.format("Can't update customer:: No customer found with the provided ID: %s", request.id())
                 ));
         mergeCustomer(customer, request);
-        repository.save(customer);
+        this.repository.save(customer);
     }
 
     private void mergeCustomer(Customer customer, CustomerRequest request) {
-        if(Strings.isNotBlank(request.firstname())){
+        if(StringUtils.isNotBlank(request.firstname())){
             customer.setFirstname(request.firstname());
         }
-        if(Strings.isNotBlank(request.lastname())){
+        if(StringUtils.isNotBlank(request.lastname())){
             customer.setLastname(request.lastname());
         }
-        if(Strings.isNotBlank(request.email())){
+        if(StringUtils.isNotBlank(request.email())){
             customer.setEmail(request.email());
         }
         if(request.address() != null){
@@ -48,18 +46,18 @@ public class CustomerService {
     }
 
     public List<CustomerResponse> findAllCustomers() {
-        return repository.findAll()
+        return this.repository.findAll()
                 .stream()
-                .map(mapper::fromCustomer)
+                .map(this.mapper::fromCustomer)
                 .collect(Collectors.toList());
     }
 
     public Boolean existsById(String customerId) {
-        return repository.findById(customerId).isPresent();
+        return this.repository.findById(customerId).isPresent();
     }
 
     public CustomerResponse findById(String customerId) {
-        return repository.findById(customerId)
+        return this.repository.findById(customerId)
                 .map(mapper::fromCustomer)
                 .orElseThrow(()-> new CustomerNotFoundException(
                         format("No customer found with the provided ID:: %s", customerId)));
