@@ -23,13 +23,18 @@ public class Payment {
     @Id
     @GeneratedValue
     private Integer id;
+
     private BigDecimal amount;
+
     @Enumerated(STRING)
     private PaymentMethod paymentMethod;
+
     private Integer orderId;
+
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdDate;
+
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime lastModifiedAt;
