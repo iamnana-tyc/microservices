@@ -1,0 +1,39 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true  # Enables service discovery for dynamic routing
+      routes:
+        # Route for customer-service
+        - id: customer-service
+          uri: lb:http://CUSTOMER-SERVICE  # Ensure CUSTOMER-SERVICE is registered in the service discovery tool
+          predicates:
+            - Path=/api/v1/customers/**
+
+        # Route for order-service
+        - id: order-service
+          uri: lb:http://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/orders/**
+
+        # Route for order-lines-service
+        - id: order-lines-service
+          uri: lb:http://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/order-lines/**
+
+        # Route for product-service
+        - id: product-service
+          uri: lb:http://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/v1/products/**
+
+        # Route for payment-service
+        - id: payment-service
+          uri: lb:http://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/v1/payments/**
+
+server:
+  port: 8222  # Port for the Gateway Service
