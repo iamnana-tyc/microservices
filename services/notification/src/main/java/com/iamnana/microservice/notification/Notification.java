@@ -1,6 +1,5 @@
 package com.iamnana.microservice.notification;
 
-
 import com.iamnana.microservice.kafka.order.OrderConfirmation;
 import com.iamnana.microservice.kafka.payment.PaymentConfirmation;
 import lombok.*;
